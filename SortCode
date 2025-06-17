@@ -1,0 +1,93 @@
+# TODO: add more sorting algorithms
+import time
+import random
+inp = False     # Not sure if i'm keeping this. Just for a test.
+choosing = True
+dataset = []
+gelp = 0
+print(f"Would you like a pre-made dataset or make the dataset yourself?\nType 1 for a pre-made dataset.\nType 2 to make it yourself.\nType 3 for a worst-case dataset.")
+while choosing:
+    udataset = input()
+
+    if udataset == "1":
+        generating = True
+        choosing = False
+        choosing2 = True
+        print("How many values should there be in the dataset?")
+        while choosing2:
+            try:
+                udataset = int(input())
+            except ValueError:
+                print("Invalid input.")
+            if udataset < 1:
+                print("Must use values above 0.")
+            else:
+                choosing2 = False
+                while generating:
+                    if gelp < udataset:
+                        dataset.append(random.randint(1, 100))
+                        gelp += 1
+                    else:
+                        generating = False
+                        print(f"Dataset: {dataset}\nType anything when you are ready for it to be sorted.")
+                        input()
+
+    elif udataset == "2":
+        print("Input some numbers for the dataset to get sorted! Input -1 if you are done.")
+        choosing = False
+        inp = True
+    elif udataset == "3":
+        choosing = False
+        choosing2 = True
+        print("How many values should there be in the dataset?")
+        while choosing2:
+            try:
+                udataset = int(input())
+            except ValueError:
+                print("Invalid input.")
+            if udataset < 1:
+                print("Must use values above 0.")
+            else:
+                choosing2 = False
+                dataset = list(range(udataset, 0, -1))  # Reverse sorted, so it's the worst case.
+                print(f"Dataset: {dataset}\nType anything when you are ready for it to be sorted.")
+                input()
+    else:
+        print("Invalid input.")
+
+while inp:
+    try:
+        typ = int(input())
+        if typ == -1:
+            inp = False
+        else:
+            dataset.append(typ)
+            print("Dataset:", dataset)
+    except ValueError:
+        print("Please input only numbers. No decimals.")
+print("Sorting...")
+start = time.time()
+n = len(dataset)
+progress = 0
+op = 0
+while n > 1:
+    y = 0
+    un = 0
+    while y <= n - 2:
+        op += 1
+        if dataset[y] > dataset[y + 1]:     # If the number is bigger than the one after, swap them.
+            dataset[y], dataset[y + 1] = [dataset[y + 1], dataset[y]]
+            un = y + 1
+            op += 1
+        y += 1
+    n = un
+    progress += 1
+    print(progress)
+print("Done!")
+print(dataset)
+print("Operations:", op)
+elapsed = time.time() - start
+if elapsed < 1:
+    print(f"Time elapsed: {(elapsed * 1000):.1f} milliseconds")
+else:
+    print(f"Time elapsed: {elapsed:.1f} seconds")
